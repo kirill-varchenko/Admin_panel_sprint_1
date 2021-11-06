@@ -4,9 +4,10 @@ import psycopg2
 from psycopg2.extensions import connection as _connection
 from psycopg2.extras import DictCursor
 
+from db_dataclasses import (FilmWork, Genre, GenreFilmWork, Person,
+                            PersonFilmWork)
 from postgres_saver import PostgresSaver
 from sqlite_loader import SQLiteLoader
-from db_dataclasses import Genre, FilmWork, Person, GenreFilmWork, PersonFilmWork
 
 TABLES_DATACLASSES = {
     "genre": Genre,

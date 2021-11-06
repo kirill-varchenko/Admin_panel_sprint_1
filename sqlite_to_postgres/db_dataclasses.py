@@ -1,6 +1,6 @@
 import uuid
-from datetime import datetime, date
 from dataclasses import dataclass, field
+from datetime import date, datetime
 
 
 @dataclass
@@ -40,6 +40,7 @@ class GenreFilmWork:
     film_work_id: uuid.UUID
     genre_id: uuid.UUID
     created_at: datetime
+    updated_at: datetime = None
     id: uuid.UUID = field(default_factory=uuid.uuid4)
 
 
@@ -49,4 +50,5 @@ class PersonFilmWork:
     person_id: uuid.UUID
     role: str
     created_at: datetime
+    updated_at: datetime = None
     id: uuid.UUID = field(default_factory=uuid.uuid4)

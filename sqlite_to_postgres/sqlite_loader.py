@@ -1,5 +1,5 @@
-import sqlite3
 import itertools
+import sqlite3
 
 
 class SQLiteLoader:
