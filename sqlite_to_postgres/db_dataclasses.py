@@ -1,10 +1,15 @@
 import uuid
+from abc import ABC
 from dataclasses import dataclass, field
 from datetime import date, datetime
 
 
+class AbstractRow(ABC):
+    pass
+
+
 @dataclass
-class Genre:
+class Genre(AbstractRow):
     name: str
     description: str
     created_at: datetime
@@ -13,7 +18,7 @@ class Genre:
 
 
 @dataclass
-class FilmWork:
+class FilmWork(AbstractRow):
     title: str
     description: str
     creation_date: date
@@ -27,7 +32,7 @@ class FilmWork:
 
 
 @dataclass
-class Person:
+class Person(AbstractRow):
     full_name: str
     birth_date: date
     created_at: datetime
@@ -36,7 +41,7 @@ class Person:
 
 
 @dataclass
-class GenreFilmWork:
+class GenreFilmWork(AbstractRow):
     film_work_id: uuid.UUID
     genre_id: uuid.UUID
     created_at: datetime
@@ -45,7 +50,7 @@ class GenreFilmWork:
 
 
 @dataclass
-class PersonFilmWork:
+class PersonFilmWork(AbstractRow):
     film_work_id: uuid.UUID
     person_id: uuid.UUID
     role: str

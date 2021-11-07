@@ -1,0 +1,6 @@
+dbname: movies_database
+host: 127.0.0.1
+options: -c search_path=content
+password: '1234'
+port: 5432
+user: postgres

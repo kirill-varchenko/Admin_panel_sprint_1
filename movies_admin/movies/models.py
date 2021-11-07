@@ -2,7 +2,7 @@ import uuid
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class TimeStampedModel(models.Model):
     # В созданных вами таблицах есть поля created_at и updated_at.
@@ -37,10 +37,15 @@ class PersonFilmwork(TimeStampedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     film_work = models.ForeignKey('Filmwork', on_delete=models.CASCADE)
     person = models.ForeignKey('Person', on_delete=models.CASCADE)
-    role = models.CharField(_('role'), max_length=255, choices=PersonRole.choices)
+    role = models.CharField(_('role'), max_length=20, choices=PersonRole.choices)
 
     class Meta:
         db_table = "content\".\"person_film_work"
+
+        constraints = [
+            models.UniqueConstraint(fields=['film_work', 'person', 'role'],
+                                    name='unique film_work, person, role combination')
+        ]
 
 class Genre(TimeStampedModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -51,7 +56,6 @@ class Genre(TimeStampedModel):
     class Meta:
         verbose_name = _('genre')
         verbose_name_plural = _('genres')
-        # Ваши таблицы находятся в нестандартной схеме. Это тоже нужно указать в классе модели
         db_table = "content\".\"genre"
 
     def __str__(self):
@@ -65,6 +69,10 @@ class FilmworkGenre(TimeStampedModel):
     class Meta:
         db_table = "content\".\"genre_film_work"
 
+        constraints = [
+            models.UniqueConstraint(fields=['film_work', 'genre'],
+                                    name='unique film_work, genre combination')
+        ]
 
 class FilmworkType(models.TextChoices):
     MOVIE = 'movie', _('movie')
@@ -78,7 +86,9 @@ class Filmwork(TimeStampedModel):
     creation_date = models.DateField(_('creation date'), blank=True)
     certificate = models.TextField(_('certificate'), blank=True)
     file_path = models.FileField(_('file'), upload_to='film_works/', blank=True)
-    rating = models.FloatField(_('rating'), validators=[MinValueValidator(0)], blank=True)
+    rating = models.FloatField(_('rating'),
+                               validators=[MinValueValidator(0), MaxValueValidator(10)],
+                               blank=True)
     type = models.CharField(_('type'), max_length=20, choices=FilmworkType.choices)
     genres = models.ManyToManyField(Genre, through='FilmworkGenre')
     persons = models.ManyToManyField(Person, through='PersonFilmwork')
