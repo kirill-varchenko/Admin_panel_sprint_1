@@ -44,7 +44,7 @@ class PersonFilmwork(TimeStampedModel):
 
         constraints = [
             models.UniqueConstraint(fields=['film_work', 'person', 'role'],
-                                    name='unique film_work, person, role combination')
+                                    name='film_work_person_role_idx')
         ]
 
 class Genre(TimeStampedModel):
@@ -71,7 +71,7 @@ class FilmworkGenre(TimeStampedModel):
 
         constraints = [
             models.UniqueConstraint(fields=['film_work', 'genre'],
-                                    name='unique film_work, genre combination')
+                                    name='film_work_genre_idx')
         ]
 
 class FilmworkType(models.TextChoices):

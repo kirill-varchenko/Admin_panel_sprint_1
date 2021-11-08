@@ -1,8 +1,8 @@
 import itertools
 import sqlite3
-from typing import Generator, List, Tuple
+from typing import Generator
 
-from db_dataclasses import AbstractRow
+from db_dataclasses import DATACLASS_TYPES
 
 
 class SQLiteLoader:
@@ -13,8 +13,8 @@ class SQLiteLoader:
         self.cursor = connection.cursor()
 
     def load_table(
-        self, table: str, data_class: AbstractRow, n: int = 100
-    ) -> Generator[Tuple[List[AbstractRow], str], None, None]:
+        self, table: str, data_class: DATACLASS_TYPES, n: int = 100
+    ) -> Generator[tuple[list[DATACLASS_TYPES], str], None, None]:
         """Генератор для чтения пачки данных из таблицы."""
         self.cursor.execute(f"SELECT * FROM {table}")
         while True:
@@ -24,8 +24,8 @@ class SQLiteLoader:
             yield res, table
 
     def load_movies(
-        self, tables_dataclasses: List[Tuple[str, AbstractRow]], n: int = 100
-    ) -> Generator[Tuple[List[AbstractRow], str], None, None]:
+        self, tables_dataclasses: list[tuple[str, DATACLASS_TYPES]], n: int = 100
+    ) -> Generator[tuple[list[DATACLASS_TYPES], str], None, None]:
         """Генератор для чтения пачек данных из заданных таблиц."""
         table_iters = [
             self.load_table(table, data_class, n=n)

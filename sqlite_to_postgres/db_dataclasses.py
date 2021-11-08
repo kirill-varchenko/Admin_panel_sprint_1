@@ -1,15 +1,11 @@
 import uuid
-from abc import ABC
 from dataclasses import dataclass, field
 from datetime import date, datetime
-
-
-class AbstractRow(ABC):
-    pass
+from typing import Union
 
 
 @dataclass
-class Genre(AbstractRow):
+class Genre:
     name: str
     description: str
     created_at: datetime
@@ -18,7 +14,7 @@ class Genre(AbstractRow):
 
 
 @dataclass
-class FilmWork(AbstractRow):
+class FilmWork:
     title: str
     description: str
     creation_date: date
@@ -32,7 +28,7 @@ class FilmWork(AbstractRow):
 
 
 @dataclass
-class Person(AbstractRow):
+class Person:
     full_name: str
     birth_date: date
     created_at: datetime
@@ -41,7 +37,7 @@ class Person(AbstractRow):
 
 
 @dataclass
-class GenreFilmWork(AbstractRow):
+class GenreFilmWork:
     film_work_id: uuid.UUID
     genre_id: uuid.UUID
     created_at: datetime
@@ -50,10 +46,13 @@ class GenreFilmWork(AbstractRow):
 
 
 @dataclass
-class PersonFilmWork(AbstractRow):
+class PersonFilmWork:
     film_work_id: uuid.UUID
     person_id: uuid.UUID
     role: str
     created_at: datetime
     updated_at: datetime = None
     id: uuid.UUID = field(default_factory=uuid.uuid4)
+
+
+DATACLASS_TYPES = Union[Genre, FilmWork, Person, GenreFilmWork, PersonFilmWork]

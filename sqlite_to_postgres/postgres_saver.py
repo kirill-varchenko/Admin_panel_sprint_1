@@ -1,8 +1,8 @@
 import re
 from dataclasses import astuple
-from typing import List, Optional
+from typing import Optional
 
-from db_dataclasses import AbstractRow
+from db_dataclasses import DATACLASS_TYPES
 
 
 class PostgresSaver:
@@ -11,7 +11,7 @@ class PostgresSaver:
         self.connection = connection
         self.cursor = self.connection.cursor()
 
-    def make_insert_query(self, data: List[AbstractRow], table: str) -> Optional[str]:
+    def make_insert_query(self, data: list[DATACLASS_TYPES], table: str) -> Optional[str]:
         """Метод формирует строку для вставки данных исходя из параметров dataclass.
         Строки, уже существующие в БД, игнорируются."""
         if not data:
@@ -27,7 +27,7 @@ VALUES {args}
 ON CONFLICT (id) DO NOTHING;"""
         return res
 
-    def save_data(self, data: List[AbstractRow], table: str) -> None:
+    def save_data(self, data: list[DATACLASS_TYPES], table: str) -> None:
         """Метод сохраняет данные в таблицы"""
         if not data:
             return
