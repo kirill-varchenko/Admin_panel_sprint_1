@@ -55,9 +55,9 @@ def load_from_sqlite(connection: sqlite3.Connection, pg_conn: _connection) -> No
     try:
         for data, table in sqlite_loader.load_movies(TABLES_DATACLASSES):
             postgres_saver.save_data(data, table)
-    except sqlite3.OperationalError as e:
+    except sqlite3.OperationalError:
         logging.exception("Error reading from SQLite.")
-    except psycopg2.Error as e:
+    except psycopg2.Error:
         logging.exception("Error writing to Postgres.")
 
 
@@ -73,7 +73,7 @@ if __name__ == "__main__":
             **asdict(dsn), cursor_factory=DictCursor
         ) as pg_conn:
             load_from_sqlite(sqlite_conn, pg_conn)
-    except psycopg2.OperationalError as e:
+    except psycopg2.OperationalError:
         logging.exception("Cannot connect to Postgres.")
         exit(1)
 
